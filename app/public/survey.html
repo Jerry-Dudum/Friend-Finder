@@ -15,11 +15,14 @@
         .card {
             background-color: rgb(0, 140, 255);
         }
-        label, h3 {
+
+        label,
+        h3 {
             font-weight: bold;
             font-size: 20px;
             color: white;
         }
+
         button {
             margin-left: 15px;
         }
@@ -38,7 +41,7 @@
                                 <label for="input">Name</label>
                                 <input id="name" type="name" class="form-control" placeholder="Jerry Dudum">
                                 <label for="input">Photo</label>
-                                <input id="link" type="url" class="form-control">
+                                <input id="photoLink" type="url" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -160,6 +163,48 @@
                 </div>
         </form>
     </div>
+
+    <div id="friendModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your new Best Friend is...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="friend">YOUR BEST FRIEND</p>
+                    <img id="photo" src="#" alt="Best Friend" style="height: 250px; width: 300px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#friendModal").modal("hide");
+            $("#submit").click(function () {
+                event.preventDefault();
+
+                var answers = {
+                    name: $("#name").val().trim(),
+                    photo: $("#photoLink").val().trim(),
+                    scores: [$("#answer1").val(), $("#answer2").val(), $("#answer3").val(), $("#answer4").val(), $("#answer5").val(),
+                    $("#answer6").val(), $("#answer7").val(), $("#answer8").val(), $("#answer9").val(), $("#answer10").val(),]
+                };
+
+                $.post("/api/friends", answers, function (res) {
+                    $("#friend").text(res.name);
+                    $("#photo").attr("src", res.photo);
+                    $("#friendModal").modal("show");
+                });
+            });
+        })
+    </script>
 
 </body>
 
